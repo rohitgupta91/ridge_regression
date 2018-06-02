@@ -1,6 +1,4 @@
-Fast gradient algorithm to solve L2 regularized logistic regression problem.\
-
-
+Fast gradient algorithm to solve L2 regularized logistic regression problem.\\\
 The l2 regularized logistic problem writes as:
 
 ![first equation](http://latex.codecogs.com/gif.latex?min_%7B%7D%20%28%5Cbeta%29%20%3A%3D%201/n%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dlog%281%20&plus;%20exp%28-y_ix_i%5ET%5Cbeta%20%29%29%20&plus;%20%5Clambda%20%5Cleft%20%5C%7C%20%5Cbeta%20%5Cright%20%5C%7C_2%5E2)
