@@ -1,4 +1,4 @@
-Fast gradient algorithm to solve L2 regularized logistic regression problem.
+Fast gradient algorithm to solve L2 regularized logistic regression problem.  
 
 
 The l2 regularized logistic problem writes as:
