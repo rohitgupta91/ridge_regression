@@ -22,7 +22,7 @@ The fast-gradient algorithm writes as:
 
 ![fatgrad7](http://latex.codecogs.com/gif.latex?%5Ctextbf%7Buntil%20%7D%20%5Ctextrm%7Bthe%20stopping%20criterion%20%7D%5Cleft%20%5C%7C%20%5CUpsilon%20F%20%5Cright%20%5C%7C%5Cleq%20%5Cvarepsilon)
 ___
-Initializing Parameters:
+Class Parameters:
 -
 - Regularization term
 - Initial step size
