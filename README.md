@@ -24,9 +24,9 @@ The fast-gradient algorithm writes as:
 ___
 Initializing Parameters:
 -
-- Regularization Term
+- Regularization term
 - Initial step size
-- Maximum Iterations
+- Maximum iterations
 - Tolerance value
 
 ___
@@ -37,4 +37,5 @@ Python libraries needed for running the source and demo:
 - random
 
 The class labels should be given values of [-1, +1]
+
 Examples to use the code is provided in the demo folder.
