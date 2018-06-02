@@ -1,46 +1,91 @@
-#importing modules
+"""
+This module contains a class with all the functions to solve the l2-regularized
+logistic regression problem.
+It incorporates fast gradient algorithm with backtracking line search.
+
+Implementation by Rohit Gupta
+rgupta91@uw.edu
+June 2018
+"""
+
+# importing modules
 import numpy as np
 
 # defining class for ridge regression with fast gradient algorithm
 class ridge_regression:
-    def __init__ (self, lambda_val = 0.01, t_init = 1, max_iter = 100, eps = 0.001):
+    """
+     Class to define all the functions for running fast gradient algorithm for
+     l2-regularized logistic regression
+    """
+    def __init__(self, lambda_val=0.01, t_init=1, max_iter=100, eps=0.001):
+        """
+        Collect all the inputs to the algorithm
+        :param lambda_val: regularization term 
+        :param t_init: initial step size
+        :param max_iter: maximum number of iterations by fast gradient and
+        backtracking
+        :param eps: tolerance criterion
+        """
         self.lambda_val = lambda_val
         self.t_init = t_init
         self.max_iter = max_iter
         self.eps = eps
         
-    #writing the objective function
+    # writing the objective function
     def objective_func(self, x_mat, y_array, beta_array, lambda_val):
+        """
+        Computing the objective value of the supplied input
+        :param x_mat: feature matrix
+        :param y_array: label array
+        :param beta_array: array of beta values
+        :param lambda_val: regularization term 
+        :return: objective value
+        """
         yhat = np.matmul(self.x_mat, beta_array)
         logterm = np.log(1 + np.exp(-(self.y_array)*(yhat)))
         res = np.mean(logterm) + self.lambda_val*np.linalg.norm(beta_array)**2
         return res
     
-    #function for computing the p matrix
+    # function for computing the p matrix
     def compute_p(self, x_mat, y_array, beta_array):
+        """
+        Computing the p-matrix to be used for caluclating gradient
+        :param x_mat: feature matrix
+        :param y_array: label array
+        :param beta_array: array of beta values
+        :return: p-matrix
+        """
         rand = np.exp(-self.y_array*(self.x_mat.dot(beta_array)))
         p_val = rand/(1+rand)
         p_val = np.diag(p_val)
         return (p_val)
 
-    #writing the function computegrad
+    # writing the function computegrad
     def computegrad(self, x_mat, y_array, beta_array, lambda_val):
+        """
+        Computing the gradient
+        :param x_mat: feature matrix
+        :param y_array: label array
+        :param beta_array: array of beta values
+        :param lambda_val: regularization term
+        :return: gradient 
+        """
         p_mat = self.compute_p(self.x_mat, self.y_array, beta_array)
         res = 2*self.lambda_val*beta_array - ((self.x_mat.T.dot(p_mat)).dot(self.y_array))/len(self.y_array)
         return res
 
-    #writing the function backtracking
-    def bt_line_search(self, x_mat, y_array, beta_array, lambda_val, t=1, alpha = 0.5, beta = 0.5, max_iter = 100):
+    # writing the function backtracking
+    def bt_line_search(self, x_mat, y_array, beta_array, lambda_val, t=1, alpha=0.5, beta=0.5, max_iter=100):
         """
         Perform backtracking line search
-        Inputs:
-          - x: Current point
-          - t: Starting (maximum) step size
-          - alpha: Constant used to define sufficient decrease condition
-          - beta: Fraction by which we decrease t if the previous t doesn't work
-          - max_iter: Maximum number of iterations to run the algorithm
-        Output:
-          - t: Step size to use
+        :param x_mat: feature matrix
+        :param y_array: label array
+        :param beta_array: array of beta values
+        :param t: Starting (maximum) step size
+        :param alpha: Constant used to define sufficient decrease condition
+        :param beta: Fraction by which decrease t if the previous t doesn't work
+        :param max_iter: Maximum number of iterations to run the algorithm
+        :return: Step size to use
         """
         grad_beta = self.computegrad(self.x_mat, self.y_array, beta_array, self.lambda_val)
         norm_grad_beta = np.linalg.norm(grad_beta)
@@ -63,6 +108,12 @@ class ridge_regression:
 
     # writing the fastgradalgo method
     def fit(self, x_mat, y_array):
+        """
+        Fast gradient algorithm: faster gradient desccent algorithm
+        :param x_mat: feature matrix
+        :param y_array: label array
+        :return: final beta values for the fitted model
+        """
         self.x_mat = x_mat
         self.y_array = y_array
                 
@@ -71,7 +122,7 @@ class ridge_regression:
         grad_beta = self.computegrad(self.x_mat, self.y_array, self.beta_val, self.lambda_val)
         iter_v = 0
         
-        while np.linalg.norm(grad_beta) > self.eps and iter_v < self.max_iter:
+        while np.linalg.norm(grad_beta)>self.eps and iter_v<self.max_iter:
             t = self.bt_line_search(self.x_mat, self.y_array, self.beta_val, self.lambda_val, t = self.t_init)
             beta_old = self.beta_val
             self.beta_val = theta_val - t*self.computegrad(self.x_mat, self.y_array, theta_val, self.lambda_val)
@@ -92,6 +143,11 @@ class ridge_regression:
     
     # writing the predict function
     def predict(self, x_pred):
+        """
+        Predict the values for the supplied dataset
+        :param x_pred: feature matrix 
+        :return: predicted labels
+        """
         self.x_pred = x_pred
         rand = np.exp(self.x_pred.dot(self.model_result))
         final_r = rand/(rand+1)        
