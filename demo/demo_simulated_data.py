@@ -1,8 +1,10 @@
-#importing modules
+# importing modules
+import sys
+sys.path.append("../")
 import numpy as np
 import random
 import pandas as pd
-from class_ridge import ridge_regression
+from src import ridge_regression
 
 # creating a simple simulated dataset
 num_rows = 1000
@@ -12,13 +14,13 @@ num_col = 10
 sim_data_features = np.random.normal(0, 1, (num_rows, num_col))
 sim_data_features = pd.DataFrame(sim_data_features)
 
-# adding an intercept 
+# adding an intercept
 sim_data_features[sim_data_features.shape[1]] = 1
 
 # a random selection of -1s and 1s for the class labels
 sim_data_labels = []
 for i in range(0, num_rows):
-    sim_data_labels.append(random.choice([-1,1]))
+    sim_data_labels.append(random.choice([-1, 1]))
 sim_data_labels = pd.DataFrame(sim_data_labels)
 sim_data_labels.columns = ['y']
 
@@ -43,7 +45,7 @@ train_labels = train_labels.values
 test_labels = test_labels.values
 
 # launch the method
-clf = ridge_regression(lambda_val = 0.001)
+clf = ridge_regression(lambda_val=0.001)
 clf.fit(train_features, train_labels)
 
 # evaluating the performance of the method
@@ -57,6 +59,6 @@ test_df['error'] = test_df['labels'] - test_df['pred']
 test_df['error'] = test_df['error'] != 0
 test_df['error'] = test_df['error']*1
 
-#calculating the total error
+# calculating the total error
 err = sum(test_df['error'])/float(test_df.shape[0])
 print "The error on the simulated dataset is", err
