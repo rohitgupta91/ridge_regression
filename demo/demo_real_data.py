@@ -1,16 +1,16 @@
 # importing modules
-import numpy as np
-import random
+import sys
+sys.path.append("../")
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
-from class_ridge import ridge_regression
+from src import ridge_regression
 
 # reading spam dataset
-spam_data = pd.read_csv('https://web.stanford.edu/~hastie/ElemStatLearn/datasets/spam.data', header = None, delim_whitespace=True)
+spam_data = pd.read_csv('https://web.stanford.edu/~hastie/ElemStatLearn/datasets/spam.data', header=None, delim_whitespace=True)
 
 # pre-processing
-X = spam_data.drop(57, axis=1) 
+X = spam_data.drop(57, axis=1)
 y = spam_data[57]
 
 # divide the data into training and test sets. By default, 25% goes into the test set.
@@ -25,7 +25,7 @@ X_test = scaler.transform(X_test)
 X_train = preprocessing.add_dummy_feature(X_train)
 X_test = preprocessing.add_dummy_feature(X_test)
 
-#making y_values {-1,1}
+# making y_values {-1,1}
 y_train[y_train == 0] = -1
 y_test[y_test == 0] = -1
 
@@ -44,6 +44,6 @@ test_df['error'] = test_df['labels'] - test_df['pred']
 test_df['error'] = test_df['error'] != 0
 test_df['error'] = test_df['error']*1
 
-#calculating the total error
+# calculating the total error
 err = sum(test_df['error'])/float(test_df.shape[0])
 print "The error on the spam dataset is", err
